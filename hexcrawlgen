@@ -1,0 +1,39 @@
+import random
+
+class Hex(object):
+	def __init__(self, x, y):
+		self.x = x
+		self.y = y
+		self.contents = []
+		categories = ['Hostile Lair', 'Ruins', 'Anomaly', 'Landmark', 'Settlement']
+		for i in categories:
+			if random.randint(1,100) <= 10:
+				self.contents.append(i)
+
+class HexMap(object):
+	def __init__(self, hexes, x, y):
+		self.hexes = hexes
+		self.x = x
+		self.y = y
+
+def drawHexMap(x, y):
+	hex_map = []
+	for i in range(y):
+		hex_row = []
+		for j in range(x):
+			hex_row.append(Hex(j,i))
+		hex_map.append(hex_row)
+	return HexMap(hex_map, x, y)
+
+def export(HexMap, file='hexinfo.txt'):
+	f = open(file, 'w')
+	for y in range(len(HexMap.hexes)):
+		for x in range(len(HexMap.hexes[y])):
+			f.write('\n\nHex Coordinates: ('+ str(x) + ', ' + str(y) + ')\n')
+			if len(HexMap.hexes[y][x].contents) > 0:
+				f.write('Contents: \n')
+				for i in HexMap.hexes[y][x].contents:
+					f.write(i + '\n')
+	f.close()
+	print('Export done.\n')
+	return
